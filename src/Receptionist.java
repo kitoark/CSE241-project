@@ -1,2 +1,2 @@
-public class Receptionist {
+public class Receptionist extends Staff{
 }
