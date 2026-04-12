@@ -9,4 +9,8 @@ public class Guest {
     private Gender gender;
     private RoomType roomPrefrences;
 
+    public Guest(){
+
+    }
+
 }
