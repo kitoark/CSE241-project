@@ -1,4 +1,3 @@
-
 public class RoomType {
 
     private int typeId;
