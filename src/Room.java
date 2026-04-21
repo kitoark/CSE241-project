@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Room {
+public class Room implements Manageable{
     // Status options for a room
     public enum RoomStatus {
         AVAILABLE,

@@ -13,4 +13,7 @@ public class Guest {
 
     }
 
+    public double getBalance() {
+        return 0;
+    }
 }

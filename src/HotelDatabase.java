@@ -8,7 +8,6 @@ public class HotelDatabase {
     public static ArrayList<Amenity> amenitiesDatabase;
 
 
-
     public static void addGuest(Guest guest){
         guests.add(guest);
     }
@@ -28,7 +27,7 @@ public class HotelDatabase {
     public static void createDummyData(){
         addGuest(new Guest());
         addRoom(new Room(1000,1,1,new RoomType(1000,"Single Room",1,250.99)));
-        addInvoice(new Invoice());
-        addReservation(new Reservation());
+        //addInvoice(new Invoice());
+        //addReservation(new Reservation());
     }
 }
