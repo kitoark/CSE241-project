@@ -8,21 +8,21 @@ abstract public class Staff {
     private Schedule workingHours;
 
 
-public Staff(String username,String password,LocalDate dateOfBirth,Role role,String workingHours2){
+public Staff(String username,String password,LocalDate dateOfBirth,Role role,Schedule workingHours){
 this.username=username;
 this.password=password;
 this.dateOfBirth=dateOfBirth;
 this.role=role;
-this.workingHours=workingHours;
+this.workingHours = workingHours;
 }
 public void viewAllGuests(){
-System.out.println("Viewing"+guests.size()+"guests");
+    System.out.println("Viewing "+ HotelDatabase.guests.size()+" guests");
 }
 public void viewAllRooms(){
-System.out.println("viewing"+rooms.size()+"rooms");
+System.out.println("viewing"+ HotelDatabase.rooms.size()+"rooms");
 }
-public void viewAllREservations(){
-System.out.println("viewing"+reservations.size()+"reservations");
+public void viewAllReservations(){
+System.out.println("viewing"+ HotelDatabase.reservations.size()+"reservations");
 }
 public String getUsername(){
     return username;
@@ -30,13 +30,13 @@ public String getUsername(){
 public Role getRole(){
     return role;
 }
-public String getpassword(){
+public String getPassword(){
     return password;
 }
-public LocalDate getdateOfBirth(){
+public LocalDate getDateOfBirth(){
     return dateOfBirth;
 }
-public Schedule getworkinghours(){
+public Schedule getWorkingHours(){
     return workingHours;
 }
 public void setUsername(String username){
@@ -48,7 +48,7 @@ public void setPassword(String password){
 public void setRole(Role role){
     this.role=role;
 }
-public void setdateOfBirth(Role role){
+public void setDateOfBirth(Role role){
     this.role=role;
 }
 
