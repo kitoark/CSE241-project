@@ -7,7 +7,7 @@ public class Receptionist extends Staff{
 
     public void managecheckin(Reservation reservation){
         if(reservation.getStatus() == ReservationStatus.PENDING || reservation.getStatus() == ReservationStatus.CONFIRMED){
-            reservation.getRoom().setAvailable(false);
+            reservation.getRoom().setStatus(Room.RoomStatus.AVAILABLE);
             System.out.println("Successfully checked in guest for reservation: " + reservation.getReservationId());
         }
         else {
@@ -19,14 +19,14 @@ public class Receptionist extends Staff{
     public void manageCheckOut(Reservation reservation, PaymentMethod method) {
         if (reservation.getStatus() != ReservationStatus.CONFIRMED) return;
         try {
-            double amountDue = reservation.getRoom().getRoomType().getBasePrice(); 
+            double amountDue = reservation.getRoom().getRoomType().getBasePricePerNight();
             Invoice invoice = new Invoice(reservation, amountDue);
             
             invoice.processPayment(amountDue, method);
             HotelDatabase.invoices.add(invoice);
             
             reservation.setStatus(ReservationStatus.COMPLETED);
-            reservation.getRoom().setAvailable(true);
+            reservation.getRoom().setStatus(Room.RoomStatus.RESERVED);
             
             System.out.println("Check-out complete. Room " + reservation.getRoom().getRoomNumber() + " is available.");
         }
