@@ -28,21 +28,15 @@ public class Guest {
 
 
     public void setUsername(String username) {
-        while (username == null || username.isEmpty()) {
-            System.out.println("Username cannot be empty: ");
-
-            Scanner scanner = new Scanner(System.in);
-            scanner.nextLine();
-            this.username = scanner.nextLine();
-            scanner.nextLine();
-            this.username=username;
+        if (username == null || username.trim().isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be empty.");
         }
-        this.username = username;
+        this.username = username.trim();
     }
 
     public void setPassword(String password) {
-        if (password.length() < 6) {
-            System.out.println("Password must be at least 6 characters");
+        if (password == null || password.length() < 6) {
+            throw new IllegalArgumentException("Password must be at least 6 characters.");
         }
         this.password = password;
     }

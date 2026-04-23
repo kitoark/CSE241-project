@@ -1,5 +1,4 @@
 public class Main {
-    static void main(String[] args) {
-        HotelDatabase.createDummyData();
+    public static void main(String[] args) {
     }
 }
