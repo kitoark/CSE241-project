@@ -34,14 +34,14 @@ public class Guest {
         this.username = username.trim();
     }
 
-    public void setPassword(String password) {
+    public void setPassword(String password) throws IllegalArgumentException{
         if (password == null || password.length() < 6) {
             throw new IllegalArgumentException("Password must be at least 6 characters.");
         }
         this.password = password;
     }
 
-    public void setBalance(double balance) {
+    public void setBalance(double balance) throws IllegalArgumentException{
         if (balance < 0) {
             System.out.println("Balance cannot be negative");
         }
