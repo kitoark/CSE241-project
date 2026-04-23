@@ -1,7 +1,7 @@
 public class RoomType implements Manageable{
 
     private int typeId;
-    private String typeName;       
+    private String typeName;
     private int maxOccupancy;
     private double basePricePerNight;
 
