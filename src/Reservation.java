@@ -56,7 +56,7 @@ public class Reservation {
     }
     public void setCheckout(LocalDate checkout)
     {
-        if (checkin != null && checkin.isBefore(checkout))
+        if (checkin != null && checkin.isAfter(checkout))
         {
             System.out.println("Error: Checkin must be before checkout.");
             return;

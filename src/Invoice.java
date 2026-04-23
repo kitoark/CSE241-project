@@ -14,7 +14,7 @@ public class Invoice implements Payable {
     }
     @Override
     //To check amount is valid or not
-    public void Payment(double amount , PaymentMethod method) throws InvalidPaymentException {
+    public void processPayment(double amount , PaymentMethod method) throws InvalidPaymentException {
         if (amount < 0) {
             throw new InvalidPaymentException("Error:Negative Amount is Invalid Amount.");
         }
