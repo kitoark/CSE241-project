@@ -42,6 +42,43 @@ public class Admin extends Staff {
         System.out.println("Room " + roomNumber + " not found.");
     }
 
+    public void createRoomType(RoomType roomType) {
+        HotelDatabase.roomTypes.add(roomType);
+        System.out.println("Room type '" + roomType.getTypeName() + "' added.");
+    }
+
+    public void readRoomType(String typeName) {
+        for (RoomType roomType : HotelDatabase.roomTypes) {
+            if (roomType.getTypeName().equalsIgnoreCase(typeName)) {
+                roomType.printInfo();
+                return;
+            }
+        }
+        System.out.println("Room type '" + typeName + "' not found.");
+    }
+
+    public void updateRoomType(String typeName, RoomType newData) {
+        for (int i = 0; i < HotelDatabase.roomTypes.size(); i++) {
+            if (HotelDatabase.roomTypes.get(i).getTypeName().equalsIgnoreCase(typeName)) {
+                HotelDatabase.roomTypes.set(i, newData);
+                System.out.println("Room type '" + typeName + "' updated.");
+                return;
+            }
+        }
+        System.out.println("Room type '" + typeName + "' not found.");
+    }
+
+    public void deleteRoomType(String typeName) {
+        for (int i = 0; i < HotelDatabase.roomTypes.size(); i++) {
+            if (HotelDatabase.roomTypes.get(i).getTypeName().equalsIgnoreCase(typeName)) {
+                HotelDatabase.roomTypes.remove(i);
+                System.out.println("Room type '" + typeName + "' removed.");
+                return;
+            }
+        }
+        System.out.println("Room type '" + typeName + "' not found.");
+    }
+
     public void createAmenity(Amenity amenity) {
         HotelDatabase.amenitiesDatabase.add(amenity);
         System.out.println("amenity '" + amenity.getName() + "' is added to the system");

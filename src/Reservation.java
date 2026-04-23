@@ -1,21 +1,22 @@
 import java.time.LocalDate;
-public class Reservation {
+
+public class Reservation{
     private Guest guest;
     private Room room;
-    private LocalDate checkin;
-    private LocalDate checkout;
+    private LocalDate checkIn;
+    private LocalDate checkOut;
     private ReservationStatus status;
     private int reservationId;
     //Reservation Parameterized Constructor
-    public Reservation(Guest guest,Room room,LocalDate checkin,LocalDate checkout,ReservationStatus status,int reservationId)
-    {
+    public Reservation(Guest guest, Room room, LocalDate checkIn, LocalDate checkOut, ReservationStatus status, int reservationId) {
         this.guest=guest;
         this.room=room;
-        this.checkin=checkin;
-        this.checkout=checkout;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
         this.status=ReservationStatus.PENDING;
         this.reservationId=reservationId;
     }
+
     //Reservation Getters
     public Room getRoom()
     {
@@ -25,13 +26,13 @@ public class Reservation {
     {
         return guest;
     }
-    public LocalDate getCheckin()
+    public LocalDate getCheckIn()
     {
-        return checkin;
+        return checkIn;
     }
-    public LocalDate getCheckout()
+    public LocalDate getCheckOut()
     {
-        return checkout;
+        return checkOut;
     }
     public ReservationStatus getStatus()
     {
@@ -50,21 +51,25 @@ public class Reservation {
     {
         this.guest=guest;
     }
-    public void setCheckin(LocalDate checkin)
+    public void setCheckIn(LocalDate checkIn)
     {
-        this.checkin=checkin;
+        this.checkIn = checkIn;
     }
-    public void setCheckout(LocalDate checkout)
+    public void setCheckOut(LocalDate checkOut)
     {
-        if (checkin != null && checkin.isAfter(checkout))
+        if (checkIn != null && checkIn.isAfter(checkOut))
         {
             System.out.println("Error: Checkin must be before checkout.");
             return;
         }
-        this.checkout=checkout;
+        this.checkOut = checkOut;
     }
     public void setStatus(ReservationStatus status)
     {
         this.status=status;
+    }
+
+    public void printInfo() {
+        System.out.println("  Reservation #" + reservationId + " | Room: " + room.getRoomNumber() + " | " + checkIn + " → " + checkOut + " | Status: " + status);
     }
 }
