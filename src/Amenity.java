@@ -1,5 +1,5 @@
 
-public class Amenity {
+public class Amenity implements Manageable{
 
     private int amenityId;
     private String name;
@@ -27,20 +27,28 @@ public class Amenity {
 
     // Setters
     public void setName(String name) {
-        this.name = name;
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Amenity name cannot be empty.");
+        }
+        this.name = name.trim();
     }
 
     public void setExtraCostPerNight(double extraCostPerNight) {
         if (extraCostPerNight < 0) {
-            System.out.println("Error: cost cannot be negative.");
-        } else {
-            this.extraCostPerNight = extraCostPerNight;
+            throw new IllegalArgumentException("Extra cost cannot be negative.");
         }
+        this.extraCostPerNight = extraCostPerNight;
     }
 
+    @Override
     public void printInfo() {
         System.out.println("Room.Amenity ID: " + amenityId);
         System.out.println("Name: " + name);
         System.out.println("Extra Cost Per Night: " + extraCostPerNight + " EGP");
+    }
+
+    @Override
+    public String toString() {
+        return name + " (+" + extraCostPerNight + " EGP/night)";
     }
 }
