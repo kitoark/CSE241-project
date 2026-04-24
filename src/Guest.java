@@ -1,6 +1,7 @@
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.temporal.ChronoUnit;
 
 public class Guest {
 
@@ -91,23 +92,23 @@ public class Guest {
     public boolean register() {
         for (Guest guest : HotelDatabase.guests) {
             if (guest.getUsername().equalsIgnoreCase(this.username)) {
-                System.out.println("Registration failed: username '" + username + "' is already taken.");
+                System.out.println("Registration failed: username '" + username + "' is already taken");
                 return false;
             }
         }
         HotelDatabase.guests.add(this);
-        System.out.println("Guest '" + username + "' registered successfully.");
+        System.out.println("Guest '" + username + "' registered successfully");
         return true;
     }
 
     public static Guest login(String username, String password) {
         for (Guest guest : HotelDatabase.guests) {
             if (guest.getUsername().equalsIgnoreCase(username) && guest.getPassword().equals(password)) {
-                System.out.println("Login successful. Welcome, " + guest.getUsername() + "!");
+                System.out.println("Login successful. Welcome, " + guest.getUsername());
                 return guest;
             }
         }
-        System.out.println("Login failed: invalid username or password.");
+        System.out.println("Login failed: invalid username or password");
         return null;
     }
 
@@ -148,7 +149,7 @@ public class Guest {
     public void viewReservations() {
         System.out.println("\n=== Your Reservations ===");
         if (myReservations.isEmpty()) {
-            System.out.println("You have no reservations.");
+            System.out.println("You have no reservations");
             return;
         }
         for (Reservation reservation : myReservations) {
@@ -158,7 +159,7 @@ public class Guest {
 
     public void cancelReservation(Reservation reservation) {
         if (!myReservations.contains(reservation)) {
-            System.out.println("Reservation not found in your account.");
+            System.out.println("Reservation not found in your account");
             return;
         }
         if (reservation.getStatus() == ReservationStatus.COMPLETED
@@ -168,13 +169,40 @@ public class Guest {
         }
         reservation.setStatus(ReservationStatus.CANCELLED);
         reservation.getRoom().cancelReservation();
-        System.out.println("Reservation #" + reservation.getReservationId() + " cancelled.");
+        System.out.println("Reservation #" + reservation.getReservationId() + " cancelled");
     }
 
+    public void checkout(Reservation reservation, PaymentMethod method) throws InvalidPaymentException {
+
+        if (reservation.getStatus() != ReservationStatus.CONFIRMED) {
+            throw new InvalidPaymentException("Only CONFIRMED reservations can be checked out. Current status: " + reservation.getStatus());
+        }
+
+        long nights = ChronoUnit.DAYS.between(reservation.getCheckIn(), reservation.getCheckOut());
+        double amount = reservation.getRoom().getTotalCostForStay((int) nights);
+
+        //Assuming the guest always has enough when selecting cash.
+        if (method != PaymentMethod.CASH && balance < amount) {
+            throw new InvalidPaymentException("Insufficient balance. Required: " + amount + " EGP, Available: " + balance + " EGP");
+        }
+
+        Invoice invoice = new Invoice(reservation, amount);
+        invoice.processPayment(amount, method);
+
+        if (method != PaymentMethod.CASH) {
+            this.balance -= amount;
+        }
+
+        reservation.getRoom().checkOut();
+        HotelDatabase.invoices.add(invoice);
+        System.out.println("Checkout complete. Invoice total: " + amount + " EGP");
+    }
+
+
     public void printProfile() {
-        System.out.println("--- Guest Profile ---");
+        System.out.println("---- Guest Profile ----");
         System.out.println("  Username     : " + username);
-        System.out.println("  Date of Birth: " + dateOfBirth);
+        System.out.println("  Birthday     : " + dateOfBirth);
         System.out.println("  Gender       : " + gender);
         System.out.println("  Address      : " + address);
         System.out.println("  Balance      : " + balance + " EGP");
