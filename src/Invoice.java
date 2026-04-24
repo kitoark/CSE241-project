@@ -62,12 +62,12 @@ public class Invoice implements Payable {
     }
 
     public void printInfo() {
-        System.out.println("=== Invoice #" + invoiceId + " ===");
-        System.out.println("  Reservation : #" + reservation.getReservationId());
-        System.out.println("  Guest       : " + reservation.getGuest().getUsername());
-        System.out.println("  Total       : " + totalAmount + " EGP");
-        System.out.println("  Method      : " + (paymentMethod != null ? paymentMethod : "Not paid yet"));
-        System.out.println("  Date        : " + (paymentDate   != null ? paymentDate   : "-"));
-        System.out.println("  Status      : " + (paid ? "PAID" : "UNPAID"));
+        System.out.println("--- Invoice #" + invoiceId + " ---");
+        System.out.println("  Reservation: #" + reservation.getReservationId());
+        System.out.println("  Guest      : " + reservation.getGuest().getUsername());
+        System.out.println("  Total      : " + totalAmount + " EGP");
+        System.out.println("  Method     : " + (paymentMethod != null ? paymentMethod : "Not paid yet"));
+        System.out.println("  Date       : " + (paymentDate != null ? paymentDate : "-"));
+        System.out.println("  Status     : " + (paid ? "PAID" : "UNPAID"));
     }
 }

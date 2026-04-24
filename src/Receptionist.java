@@ -6,44 +6,32 @@ public class Receptionist extends Staff {
         super(username, password, dateOfBirth, Role.RECEPTIONIST, workingHours);
     }
     public void manageCheckIn(Reservation reservation) {
-        if (reservation.getStatus() == ReservationStatus.PENDING
-                || reservation.getStatus() == ReservationStatus.CONFIRMED) {
-
+        if (reservation.getStatus() == ReservationStatus.PENDING || reservation.getStatus() == ReservationStatus.CONFIRMED) {
             reservation.setStatus(ReservationStatus.CONFIRMED);
             reservation.getRoom().checkIn();
-            System.out.println("Guest '" + reservation.getGuest().getUsername()
-                    + "' successfully checked in to room "
-                    + reservation.getRoom().getRoomNumber() + ".");
+            System.out.println("Guest '" + reservation.getGuest().getUsername() + "' successfully checked in to room " + reservation.getRoom().getRoomNumber());
         } else {
-            System.out.println("Cannot check in. Reservation #"
-                    + reservation.getReservationId()
-                    + " has status: " + reservation.getStatus());
+            System.out.println("Cannot check in. Reservation #" + reservation.getReservationId() + " has status: " + reservation.getStatus());
         }
     }
     public void manageCheckOut(Reservation reservation, PaymentMethod method) {
         if (reservation.getStatus() != ReservationStatus.CONFIRMED) {
-            System.out.println("Cannot check out. Reservation #"
-                    + reservation.getReservationId()
-                    + " is not CONFIRMED. Current status: " + reservation.getStatus());
+            System.out.println("Cannot check out. Reservation #" + reservation.getReservationId() + " is not CONFIRMED. Current status: " + reservation.getStatus());
             return;
         }
 
         try {
-            long nights = java.time.temporal.ChronoUnit.DAYS.between(
-                    reservation.getCheckIn(), reservation.getCheckOut());
+            long nights = java.time.temporal.ChronoUnit.DAYS.between(reservation.getCheckIn(), reservation.getCheckOut());
 
             double amountDue = reservation.getRoom().getTotalCostForStay((int) nights);
 
             Invoice invoice = new Invoice(reservation, amountDue);
 
-            // BUG FIX: was invoice.processPayment() which did not exist — now it does
             invoice.processPayment(amountDue, method);
             HotelDatabase.invoices.add(invoice);
 
             reservation.getRoom().checkOut();   // sets room status back to AVAILABLE
-            System.out.println("Check-out complete for reservation #"
-                    + reservation.getReservationId()
-                    + ". Room " + reservation.getRoom().getRoomNumber() + " is now available.");
+            System.out.println("Check-out complete for reservation #" + reservation.getReservationId() + ". Room " + reservation.getRoom().getRoomNumber() + " is now available");
             invoice.printInfo();
 
         } catch (InvalidPaymentException e) {
