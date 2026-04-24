@@ -34,7 +34,7 @@ public abstract class Staff {
 
     public void setUsername(String username) {
         if (username == null || username.trim().isEmpty()) {
-            throw new IllegalArgumentException("Username cannot be empty.");
+            throw new IllegalArgumentException("Username cannot be empty");
         }
         this.username = username.trim();
     }

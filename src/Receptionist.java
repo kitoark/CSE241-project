@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class Receptionist extends Staff {
 
@@ -21,7 +22,7 @@ public class Receptionist extends Staff {
         }
 
         try {
-            long nights = java.time.temporal.ChronoUnit.DAYS.between(reservation.getCheckIn(), reservation.getCheckOut());
+            long nights = ChronoUnit.DAYS.between(reservation.getCheckIn(), reservation.getCheckOut());
 
             double amountDue = reservation.getRoom().getTotalCostForStay((int) nights);
 
@@ -30,11 +31,11 @@ public class Receptionist extends Staff {
             invoice.processPayment(amountDue, method);
             HotelDatabase.invoices.add(invoice);
 
-            reservation.getRoom().checkOut();   // sets room status back to AVAILABLE
+            reservation.getRoom().checkOut();
             System.out.println("Check-out complete for reservation #" + reservation.getReservationId() + ". Room " + reservation.getRoom().getRoomNumber() + " is now available");
             invoice.printInfo();
-
-        } catch (InvalidPaymentException e) {
+        }
+        catch (InvalidPaymentException e) {
             System.out.println("Check-out failed: " + e.getMessage());
         }
     }

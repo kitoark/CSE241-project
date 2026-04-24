@@ -20,15 +20,15 @@ public class Room implements Manageable {
         if (roomNumber <= 0) throw new IllegalArgumentException("Room number must be positive.");
         if (floorNumber < 0) throw new IllegalArgumentException("Floor number cannot be negative.");
         if (roomType == null)  throw new IllegalArgumentException("RoomType cannot be null.");
-        this.roomId      = roomId;
-        this.roomNumber  = roomNumber;
+        this.roomId = roomId;
+        this.roomNumber = roomNumber;
         this.floorNumber = floorNumber;
-        this.roomType    = roomType;
-        this.status      = RoomStatus.AVAILABLE;
-        this.amenities   = new ArrayList<>();
+        this.roomType = roomType;
+        this.status = RoomStatus.AVAILABLE;
+        this.amenities = new ArrayList<>();
     }
 
-    // ---------- Getters ----------
+    // Getters
     public int           getRoomId()     { return roomId; }
     public int           getRoomNumber() { return roomNumber; }
     public int           getFloorNumber(){ return floorNumber; }
@@ -36,18 +36,16 @@ public class Room implements Manageable {
     public RoomStatus    getStatus()     { return status; }
     public ArrayList<Amenity> getAmenities() { return amenities; }
 
-    // ---------- Setters ----------
+    // Setters
     public void setRoomNumber(int roomNumber)   { this.roomNumber  = roomNumber; }
     public void setFloorNumber(int floorNumber) { this.floorNumber = floorNumber; }
     public void setRoomType(RoomType roomType)  { this.roomType    = roomType; }
     public void setStatus(RoomStatus status)    { this.status      = status; }
 
-    /** Convenience setter used by Receptionist during check-in / check-out. */
     public void setAvailable(boolean available) {
         this.status = available ? RoomStatus.AVAILABLE : RoomStatus.OCCUPIED;
     }
 
-    // ---------- Amenity helpers ----------
     public void addAmenity(Amenity amenity) {
         amenities.add(amenity);
         System.out.println(amenity.getName() + " added to room " + roomNumber + ".");
@@ -75,7 +73,7 @@ public class Room implements Manageable {
         }
     }
 
-    // ---------- Pricing ----------
+
     public double getTotalPricePerNight() {
         double total = roomType.getBasePricePerNight();
         for (Amenity a : amenities) total += a.getExtraCostPerNight();
@@ -83,20 +81,18 @@ public class Room implements Manageable {
     }
 
     public double getTotalCostForStay(int nights) {
-        if (nights <= 0) throw new IllegalArgumentException("Number of nights must be positive.");
         return getTotalPricePerNight() * nights;
     }
 
-    // ---------- Status helpers ----------
     public boolean isAvailable() { return status == RoomStatus.AVAILABLE; }
 
     public void reserve() {
         if (status == RoomStatus.AVAILABLE) {
             status = RoomStatus.RESERVED;
             System.out.println("Room " + roomNumber + " is now RESERVED.");
-        } else {
-            throw new RoomNotAvailableException(
-                    "Room " + roomNumber + " is not available. Current status: " + status);
+        }
+        else {
+            throw new RoomNotAvailableException("Room " + roomNumber + " is not available. Current status: " + status);
         }
     }
 
@@ -104,7 +100,8 @@ public class Room implements Manageable {
         if (status == RoomStatus.RESERVED) {
             status = RoomStatus.OCCUPIED;
             System.out.println("Guest checked in to room " + roomNumber + ".");
-        } else {
+        }
+        else {
             System.out.println("Cannot check in. Room status is: " + status);
         }
     }
@@ -113,7 +110,8 @@ public class Room implements Manageable {
         if (status == RoomStatus.OCCUPIED) {
             status = RoomStatus.AVAILABLE;
             System.out.println("Guest checked out from room " + roomNumber + ".");
-        } else {
+        }
+        else {
             System.out.println("Cannot check out. Room status is: " + status);
         }
     }
@@ -122,7 +120,8 @@ public class Room implements Manageable {
         if (status == RoomStatus.RESERVED) {
             status = RoomStatus.AVAILABLE;
             System.out.println("Reservation for room " + roomNumber + " has been cancelled.");
-        } else {
+        }
+        else {
             System.out.println("No active reservation to cancel. Room status is: " + status);
         }
     }

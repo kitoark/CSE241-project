@@ -5,7 +5,6 @@ public class RoomType implements Manageable{
     private int maxOccupancy;
     private double basePricePerNight;
 
-    // Constructor
     public RoomType(int typeId, String typeName, int maxOccupancy, double basePricePerNight) {
         this.typeId = typeId;
         this.typeName = typeName;
