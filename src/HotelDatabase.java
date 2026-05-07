@@ -79,7 +79,7 @@ public class HotelDatabase {
         addRoom(r202);
         addRoom(r301);
 
-        Guest ahmed = new Guest("ahmed",   "pass123", LocalDate.of(2003, 3, 14), 5000.00, "12 Nile St, Cairo",   Gender.MALE, "Double, high floor");
+        Guest ahmed = new Guest("ahmed",   "123456", LocalDate.of(2003, 3, 14), 5000.00, "12 Nile St, Cairo",   Gender.MALE, "Double, high floor");
         Guest mohamed = new Guest("mohamed",     "secret67", LocalDate.of(2006, 7,  4), 8000.00, "7 Tahrir Sq, Cairo",  Gender.MALE,   "Suite, quiet room");
         Guest mahmoud = new Guest("mahmoud",   "mahmoud456", LocalDate.of(2007, 11, 22), 1500.00, "88 Corniche, Alex",    Gender.MALE, "Single, low floor");
         addGuest(ahmed);

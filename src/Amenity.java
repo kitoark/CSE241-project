@@ -1,5 +1,4 @@
-
-public class Amenity implements Manageable{
+public class Amenity implements Manageable {
 
     private int amenityId;
     private String name;

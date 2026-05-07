@@ -1,4 +1,4 @@
-public class RoomType implements Manageable{
+public class RoomType implements Manageable {
 
     private int typeId;
     private String typeName;

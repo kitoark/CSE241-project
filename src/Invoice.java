@@ -20,7 +20,7 @@ public class Invoice implements Payable {
 
     // ---------- Getters ----------
     public int           getInvoiceId()     { return invoiceId; }
-    public Reservation   getReservation()   { return reservation; }
+    public Reservation getReservation()   { return reservation; }
     public double        getTotalAmount()   { return totalAmount; }
     public PaymentMethod getPaymentMethod() { return paymentMethod; }
     public LocalDateTime getPaymentDate()   { return paymentDate; }

@@ -1,7 +1,7 @@
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.temporal.ChronoUnit;
 
 public class Guest {
 
@@ -19,11 +19,11 @@ public class Guest {
                  double balance, String address, Gender gender, String roomPreferences) {
         setUsername(username);
         setPassword(password);
-        this.dateOfBirth = dateOfBirth;
+        setDateOfBirth(dateOfBirth);
         setBalance(balance);
-        this.address = address;
+        setAddress(address);
         this.gender = gender;
-        this.roomPreferences = roomPreferences;
+        setRoomPreferences(roomPreferences);
         this.myReservations = new ArrayList<>();
     }
 
@@ -31,18 +31,28 @@ public class Guest {
 
     public void setUsername(String username) {
         if (username == null || username.trim().isEmpty()) {
+            RegisterController.errorLabelText ="Username cannot be empty.";
             throw new IllegalArgumentException("Username cannot be empty.");
         }
         this.username = username.trim();
     }
+    public void setAddress(String address) {
+        if (address == null || address.trim().isEmpty()) {
+            RegisterController.errorLabelText ="Address cannot be empty.";
+            throw new IllegalArgumentException("Address cannot be empty.");
+        }
+        this.address = address.trim();
+    }
     public void setPassword(String password) throws IllegalArgumentException{
         if (password == null || password.length() < 6) {
+            RegisterController.errorLabelText ="Password must be at least 6 characters.";
             throw new IllegalArgumentException("Password must be at least 6 characters.");
         }
         this.password = password;
     }
     public void setDateOfBirth(LocalDate dateOfBirth) {
         if (dateOfBirth == null || dateOfBirth.isAfter(LocalDate.now())) {
+            RegisterController.errorLabelText ="Date of birth must be a past date.";
             throw new IllegalArgumentException("Date of birth must be a past date.");
         }
         this.dateOfBirth = dateOfBirth;
@@ -57,7 +67,11 @@ public class Guest {
         this.gender = gender;
     }
     public void setRoomPreferences(String prefs){
-        this.roomPreferences = prefs;
+        if (prefs == null || prefs.trim().isEmpty()) {
+            RegisterController.errorLabelText ="Preferences cannot be empty.";
+            throw new IllegalArgumentException("Preferences cannot be empty.");
+        }
+        this.roomPreferences = prefs.trim();
     }
 
     //  Getters
@@ -104,11 +118,9 @@ public class Guest {
     public static Guest login(String username, String password) {
         for (Guest guest : HotelDatabase.guests) {
             if (guest.getUsername().equalsIgnoreCase(username) && guest.getPassword().equals(password)) {
-                System.out.println("Login successful. Welcome, " + guest.getUsername());
                 return guest;
             }
         }
-        System.out.println("Login failed: invalid username or password");
         return null;
     }
 

@@ -32,7 +32,7 @@ public class Room implements Manageable {
     public int           getRoomId()     { return roomId; }
     public int           getRoomNumber() { return roomNumber; }
     public int           getFloorNumber(){ return floorNumber; }
-    public RoomType      getRoomType()   { return roomType; }
+    public RoomType getRoomType()   { return roomType; }
     public RoomStatus    getStatus()     { return status; }
     public ArrayList<Amenity> getAmenities() { return amenities; }
 
