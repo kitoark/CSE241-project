@@ -17,7 +17,7 @@ public class Main extends Application {
         Scene scene = new Scene(root);
 
         stage.setResizable(false);
-        stage.setTitle("javafx");
+        stage.setTitle("Grand Hotel");
         stage.setScene(scene);
         stage.show();
     }

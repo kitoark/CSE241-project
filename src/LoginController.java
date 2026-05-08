@@ -8,9 +8,7 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
     @FXML
-    private ChoiceBox<String> loginChoiceBox;
-    @FXML
-    private Button loginbutton;
+    private ComboBox<String> loginChoiceBox;
     @FXML
     private TextField loginUsernameBox;
     @FXML
@@ -42,8 +40,12 @@ public class LoginController implements Initializable {
             String username = loginUsernameBox.getText();
             String password = loginPasswordBox.getText();
             Staff staff = Staff.login(username, password);
-            if (staff != null) {
-                staffMenu(e);
+            if (staff != null && staff.getRole() == Role.ADMIN) {
+                adminMenu(e);
+                return;
+            }
+            else if (staff != null && staff.getRole() == Role.RECEPTIONIST) {
+                receptionistMenu(e);
                 return;
             }
             else {
@@ -60,7 +62,10 @@ public class LoginController implements Initializable {
         SceneSwitcher.goTo(e,"guest.fxml");
     }
 
-    public void staffMenu(ActionEvent e){
-        SceneSwitcher.goTo(e,"staff.fxml");
+    public void adminMenu(ActionEvent e){
+        SceneSwitcher.goTo(e,"adminDashboard.fxml");
+    }
+    public void receptionistMenu(ActionEvent e){
+        SceneSwitcher.goTo(e,"receptionistDashboard.fxml");
     }
 }

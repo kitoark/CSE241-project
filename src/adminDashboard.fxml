@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="700" prefWidth="1100" spacing="0" styleClass="root-vbox" stylesheets="@hotel.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" fx:controller="AdminDashboardController">
+
+    <!-- ===== TOP NAVIGATION BAR ===== -->
+    <HBox alignment="CENTER_LEFT" prefHeight="64" spacing="0" styleClass="navbar">
+        <padding>
+            <Insets left="24" right="24" />
+        </padding>
+
+        <!-- Logo -->
+        <Label styleClass="nav-logo" text="🏨 GRAND HOTEL" />
+
+        <!-- Spacer -->
+        <HBox HBox.hgrow="ALWAYS" />
+
+        <!-- Nav Buttons -->
+        <HBox alignment="CENTER" spacing="8">
+            <Button onAction="#showDashboard" styleClass="nav-btn-active" text="🏠 Dashboard" />
+            <Button onAction="#showRooms" styleClass="nav-btn" text="🛏 Rooms" />
+            <Button onAction="#showReservations" styleClass="nav-btn" text="📋 Reservations" />
+            <Button onAction="#showGuests" styleClass="nav-btn" text="👥 Guests" />
+            <Button onAction="#showInvoices" styleClass="nav-btn" text="💲 Invoices" />
+        </HBox>
+
+        <!-- Spacer -->
+        <HBox HBox.hgrow="ALWAYS" />
+
+        <!-- User Info -->
+        <HBox alignment="CENTER" spacing="10">
+            <Label fx:id="userLabel" styleClass="nav-user" text="Admin" />
+            <Button onAction="#loginMenu" styleClass="btn-logout" text="Logout" />
+        </HBox>
+    </HBox>
+
+    <!-- ===== MAIN CONTENT AREA ===== -->
+    <HBox spacing="0" VBox.vgrow="ALWAYS">
+
+        <!-- SIDEBAR -->
+        <VBox prefWidth="220" spacing="4" styleClass="sidebar">
+            <padding>
+                <Insets bottom="20" left="12" right="12" top="20" />
+            </padding>
+
+            <Label styleClass="sidebar-section-label" text="QUICK STATS" />
+
+            <VBox spacing="4" styleClass="stat-card">
+                <padding><Insets bottom="12" left="14" right="14" top="12" /></padding>
+                <Label styleClass="stat-title" text="Total Rooms" />
+                <Label fx:id="totalRoomsLabel" styleClass="stat-value" text="0" />
+            </VBox>
+
+            <VBox spacing="4" styleClass="stat-card">
+                <padding><Insets bottom="12" left="14" right="14" top="12" /></padding>
+                <Label styleClass="stat-title" text="Available" />
+                <Label fx:id="availableRoomsLabel" styleClass="stat-value-green" text="0" />
+            </VBox>
+
+            <VBox spacing="4" styleClass="stat-card">
+                <padding><Insets bottom="12" left="14" right="14" top="12" /></padding>
+                <Label styleClass="stat-title" text="Occupied" />
+                <Label fx:id="occupiedRoomsLabel" styleClass="stat-value-red" text="0" />
+            </VBox>
+
+            <VBox spacing="4" styleClass="stat-card">
+                <padding><Insets bottom="12" left="14" right="14" top="12" /></padding>
+                <Label styleClass="stat-title" text="Total Guests" />
+                <Label fx:id="totalGuestsLabel" styleClass="stat-value" text="0" />
+            </VBox>
+
+            <VBox VBox.vgrow="ALWAYS" />
+
+            <Button maxWidth="Infinity" onAction="#openAddRoomDialog" styleClass="btn-primary" text="+ Add New Room" />
+        </VBox>
+
+        <!-- MAIN PANEL -->
+        <VBox spacing="16" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+            <padding>
+                <Insets bottom="24" left="24" right="24" top="24" />
+            </padding>
+
+            <!-- Page Title + Search Bar -->
+            <HBox alignment="CENTER_LEFT" spacing="16">
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label styleClass="page-title" text="Room Management" />
+                    <Label styleClass="page-subtitle" text="View, manage and update hotel rooms" />
+                </VBox>
+                <TextField fx:id="searchField" onKeyReleased="#filterRooms" prefWidth="240" promptText="🔍  Search rooms..." styleClass="search-field" />
+                <ComboBox fx:id="statusFilter" onAction="#filterRooms" prefWidth="150" promptText="All Statuses" styleClass="role-combo" />
+            </HBox>
+
+            <!-- Room Table -->
+            <TableView fx:id="roomTable" styleClass="data-table" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colRoomId" prefWidth="60" text="ID" />
+                    <TableColumn fx:id="colRoomNumber" prefWidth="80" text="Room #" />
+                    <TableColumn fx:id="colFloor" prefWidth="70" text="Floor" />
+                    <TableColumn fx:id="colType" prefWidth="160" text="Type" />
+                    <TableColumn fx:id="colStatus" prefWidth="167.0" text="Status" />
+                    <TableColumn fx:id="colPrice" prefWidth="123.0" text="Price/Night" />
+                    <TableColumn fx:id="colAmenities" prefWidth="170.0" text="Amenities" />
+                </columns>
+                <placeholder>
+                    <Label styleClass="table-placeholder" text="No rooms found. Click '+ Add New Room' to get started." />
+                </placeholder>
+            </TableView>
+
+            <!-- Bottom action bar -->
+            <HBox alignment="CENTER_RIGHT" spacing="10">
+                <Label fx:id="tableStatusLabel" styleClass="table-status" text="Showing 0 rooms" />
+                <Button onAction="#refreshTable" styleClass="btn-secondary" text="🔄 Refresh" />
+            </HBox>
+
+        </VBox>
+    </HBox>
+
+</VBox>
