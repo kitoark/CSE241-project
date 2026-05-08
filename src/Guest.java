@@ -148,12 +148,12 @@ public class Guest {
         if (checkIn.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("Check-in date cannot be in the past");
         }
-        int newId = HotelDatabase.reservations.size() + 1;
-        long nights = java.time.temporal.ChronoUnit.DAYS.between(checkIn, checkOut);
-        double totalCost = room.getTotalCostForStay((int) nights);
-        if (this.balance < totalCost) {
-            throw new IllegalArgumentException("not enough money. Need " + totalCost + " EGP but you have " + this.balance + " EGP");
+        if(this.balance< room.getTotalPricePerNight())
+        {
+            throw new IllegalArgumentException("not enough money");
         }
+
+        int newId = HotelDatabase.reservations.size() + 1;
         Reservation reservation = new Reservation(this, room, checkIn, checkOut, ReservationStatus.PENDING, newId);
         room.reserve();
         myReservations.add(reservation);
@@ -224,9 +224,5 @@ public class Guest {
         System.out.println("  Balance      : " + balance + " EGP");
         System.out.println("  Preferences  : " + roomPreferences);
         System.out.println("  Reservations : " + myReservations.size());
-    }
-
-    public String toString() {
-        return username + " (Balance: " + String.format("%.0f", balance) + " EGP)";
     }
 }
