@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<!-- Main container stacking elements vertically (Requirement: VBox) -->
+<VBox spacing="20" alignment="TOP_CENTER" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="CheckoutPaymentController" style="-fx-background-color: #f9f9f9;">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Checkout &amp; Payment" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+    <!-- Invoice Area (Requirement: View invoice) -->
+    <StackPane style="-fx-border-color: #ccc; -fx-border-radius: 5; -fx-padding: 10;">
+        <TextArea fx:id="invoiceTextArea" editable="false" prefHeight="150"
+                  promptText="Your invoice details will appear here..."/>
+    </StackPane>
+
+    <!-- Payment Selection Area (Requirement: HBox) -->
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Label text="Select Payment Method:"/>
+        <ComboBox fx:id="paymentMethodBox" promptText="Choose Method" prefWidth="150"/>
+    </HBox>
+
+    <!-- Details Pane (Using GridPane for aligned labels/fields) -->
+    <GridPane vgap="10" hgap="10">
+        <columnConstraints>
+            <ColumnConstraints minWidth="100" />
+            <ColumnConstraints hgrow="ALWAYS" />
+        </columnConstraints>
+
+        <Label text="Cardholder Name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+        <Label text="Promo Code:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="promoField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    </GridPane>
+
+    <Separator/>
+
+    <!-- Action Area (Requirement: Confirm payment) -->
+    <HBox spacing="20" alignment="CENTER_RIGHT">
+        <Button text="Cancel" style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+        <Button text="Confirm Payment" onAction="#handleConfirmPayment"
+                style="-fx-background-color: #27ae60; -fx-text-fill: white;"/>
+    </HBox>
+
+</VBox>
