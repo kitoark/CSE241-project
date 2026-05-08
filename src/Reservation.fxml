@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="ReservationController"
+      styleClass="root-vbox"
+      stylesheets="@hotel.css"
+      spacing="0"
+      prefWidth="860"
+      prefHeight="680">
+
+    <!-- Header Bar -->
+    <HBox styleClass="form-header" alignment="CENTER_LEFT" prefHeight="64" spacing="14">
+        <padding>
+            <Insets left="28" right="28"/>
+        </padding>
+        <Button text="← Back" styleClass="btn-back" onAction="#goBack"/>
+        <Label text="New Reservation" styleClass="form-header-title"/>
+        <HBox HBox.hgrow="ALWAYS"/>
+        <Label fx:id="reservationIdLabel" text="REF: —" styleClass="form-ref-label"/>
+    </HBox>
+
+    <!-- Progress Steps -->
+    <HBox styleClass="progress-bar-container" alignment="CENTER" spacing="0" prefHeight="50">
+        <Label text="① Guest Info" styleClass="step-active"/>
+        <Label text="──────" styleClass="step-divider"/>
+        <Label text="② Room &amp; Dates" styleClass="step-inactive"/>
+        <Label text="──────" styleClass="step-divider"/>
+        <Label text="③ Confirm &amp; Pay" styleClass="step-inactive"/>
+    </HBox>
+
+    <!-- MAIN SCROLL AREA -->
+    <ScrollPane VBox.vgrow="ALWAYS" fitToWidth="true" styleClass="form-scroll">
+        <VBox spacing="24" styleClass="form-body">
+            <padding>
+                <Insets top="28" right="32" bottom="28" left="32"/>
+            </padding>
+
+            <!-- ===== SECTION 1: Guest Information ===== -->
+            <VBox styleClass="form-section" spacing="14">
+                <padding>
+                    <Insets top="18" right="20" bottom="18" left="20"/>
+                </padding>
+
+                <Label text="👤  Guest Information" styleClass="section-title"/>
+
+                <GridPane hgap="16" vgap="14">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50"/>
+                        <ColumnConstraints percentWidth="50"/>
+                    </columnConstraints>
+
+                    <!-- Row 0: Guest selector + ID display -->
+                    <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <Label text="Select Guest *" styleClass="field-label"/>
+                        <ComboBox fx:id="guestComboBox"
+                                  styleClass="input-field"
+                                  promptText="Choose existing guest..."
+                                  maxWidth="Infinity"/>
+                    </VBox>
+                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Label text="Guest Username" styleClass="field-label"/>
+                        <TextField fx:id="guestUsernameField"
+                                   styleClass="input-field input-readonly"
+                                   editable="false"
+                                   promptText="Auto-filled from selection"/>
+                    </VBox>
+
+                    <!-- Row 1: Balance + Gender -->
+                    <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <Label text="Account Balance (EGP)" styleClass="field-label"/>
+                        <TextField fx:id="guestBalanceField"
+                                   styleClass="input-field input-readonly"
+                                   editable="false"
+                                   promptText="0.00"/>
+                    </VBox>
+                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label text="Special Preferences" styleClass="field-label"/>
+                        <TextField fx:id="preferencesField"
+                                   styleClass="input-field"
+                                   promptText="e.g. High floor, Non-smoking..."/>
+                    </VBox>
+                </GridPane>
+            </VBox>
+
+            <!-- ===== SECTION 2: Room & Dates ===== -->
+            <VBox styleClass="form-section" spacing="14">
+                <padding>
+                    <Insets top="18" right="20" bottom="18" left="20"/>
+                </padding>
+
+                <Label text="🛏  Room &amp; Stay Dates" styleClass="section-title"/>
+
+                <GridPane hgap="16" vgap="14">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50"/>
+                        <ColumnConstraints percentWidth="50"/>
+                    </columnConstraints>
+
+                    <!-- Row 0: Room type + Room number -->
+                    <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <Label text="Room Type *" styleClass="field-label"/>
+                        <ComboBox fx:id="roomTypeComboBox"
+                                  styleClass="input-field"
+                                  promptText="Select room type..."
+                                  maxWidth="Infinity"
+                                  onAction="#filterRoomsByType"/>
+                    </VBox>
+                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Label text="Available Room *" styleClass="field-label"/>
+                        <ComboBox fx:id="roomComboBox"
+                                  styleClass="input-field"
+                                  promptText="Select available room..."
+                                  maxWidth="Infinity"
+                                  onAction="#updatePriceSummary"/>
+                    </VBox>
+
+                    <!-- Row 1: Check-in + Check-out -->
+                    <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <Label text="Check-In Date *" styleClass="field-label"/>
+                        <DatePicker fx:id="checkinPicker"
+                                    styleClass="input-field"
+                                    maxWidth="Infinity"
+                                    onAction="#updatePriceSummary"/>
+                    </VBox>
+                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label text="Check-Out Date *" styleClass="field-label"/>
+                        <DatePicker fx:id="checkoutPicker"
+                                    styleClass="input-field"
+                                    maxWidth="Infinity"
+                                    onAction="#updatePriceSummary"/>
+                    </VBox>
+
+                    <!-- Row 2: Nights (auto) + Floor preference -->
+                    <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                        <Label text="Number of Nights" styleClass="field-label"/>
+                        <TextField fx:id="nightsField"
+                                   styleClass="input-field input-readonly"
+                                   editable="false"
+                                   promptText="Auto-calculated"/>
+                    </VBox>
+                    <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <Label text="Payment Method *" styleClass="field-label"/>
+                        <ComboBox fx:id="paymentMethodComboBox"
+                                  styleClass="input-field"
+                                  promptText="Select payment method..."
+                                  maxWidth="Infinity"/>
+                    </VBox>
+                </GridPane>
+            </VBox>
+
+            <!-- ===== SECTION 3: Amenities ===== -->
+            <VBox styleClass="form-section" spacing="14">
+                <padding>
+                    <Insets top="18" right="20" bottom="18" left="20"/>
+                </padding>
+
+                <Label text="✨  Add-On Amenities" styleClass="section-title"/>
+                <Label text="Select additional amenities to add to this reservation (optional)."
+                       styleClass="section-description"/>
+
+                <HBox spacing="12" alignment="TOP_LEFT">
+                    <CheckBox fx:id="cbWifi"      text="Wi-Fi (+50 EGP)"      styleClass="amenity-check"/>
+                    <CheckBox fx:id="cbBreakfast" text="Breakfast (+120 EGP)" styleClass="amenity-check"/>
+                    <CheckBox fx:id="cbParking"   text="Parking (+80 EGP)"    styleClass="amenity-check"/>
+                    <CheckBox fx:id="cbSpa"       text="Spa Access (+200 EGP)" styleClass="amenity-check"/>
+                    <CheckBox fx:id="cbPool"      text="Pool Access (+100 EGP)" styleClass="amenity-check"/>
+                </HBox>
+            </VBox>
+
+            <!-- ===== SECTION 4: Price Summary ===== -->
+            <VBox styleClass="form-section price-summary-section" spacing="10">
+                <padding>
+                    <Insets top="18" right="20" bottom="18" left="20"/>
+                </padding>
+                <Label text="💰  Price Summary" styleClass="section-title"/>
+
+                <GridPane hgap="20" vgap="8">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="60"/>
+                        <ColumnConstraints percentWidth="40"/>
+                    </columnConstraints>
+
+                    <Label text="Room Base Price/Night:" styleClass="summary-label" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                    <Label fx:id="basePriceLabel" text="— EGP" styleClass="summary-value" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                    <Label text="Amenities/Night:" styleClass="summary-label" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                    <Label fx:id="amenitiesPriceLabel" text="0.00 EGP" styleClass="summary-value" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                    <Label text="Number of Nights:" styleClass="summary-label" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                    <Label fx:id="nightsSummaryLabel" text="—" styleClass="summary-value" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                    <Separator GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="2"/>
+
+                    <Label text="TOTAL AMOUNT:" styleClass="summary-total-label" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                    <Label fx:id="totalAmountLabel" text="— EGP" styleClass="summary-total-value" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                </GridPane>
+
+                <Label fx:id="balanceWarningLabel" text="" styleClass="warning-label" wrapText="true"/>
+            </VBox>
+
+        </VBox>
+    </ScrollPane>
+
+    <!-- ===== BOTTOM ACTION BAR ===== -->
+    <HBox styleClass="form-footer" alignment="CENTER_RIGHT" prefHeight="66" spacing="12">
+        <padding>
+            <Insets left="28" right="28"/>
+        </padding>
+        <Label fx:id="formErrorLabel" styleClass="error-label" text="" HBox.hgrow="ALWAYS"/>
+        <Button text="Cancel" styleClass="btn-secondary" prefWidth="120" onAction="#goBack"/>
+        <Button text="Confirm Reservation ✓" styleClass="btn-primary" prefWidth="210"
+                onAction="#handleConfirmReservation"/>
+    </HBox>
+
+</VBox>
