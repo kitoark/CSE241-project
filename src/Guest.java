@@ -152,6 +152,7 @@ public class Guest {
         {
             throw new IllegalArgumentException("not enough money");
         }
+        else { this.balance-= room.getTotalPricePerNight();}
 
         int newId = HotelDatabase.reservations.size() + 1;
         Reservation reservation = new Reservation(this, room, checkIn, checkOut, ReservationStatus.PENDING, newId);
