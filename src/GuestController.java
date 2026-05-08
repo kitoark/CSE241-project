@@ -4,6 +4,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import java.time.LocalDate;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
+
 
 public class GuestController {
 
@@ -97,5 +100,32 @@ public class GuestController {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+
+    // Add this method inside GuestController.java
+    private void startRealTimeRoomUpdates() {
+        Task<Void> backgroundUpdater = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                while (!isCancelled()) {
+                    // Simulate network/database delay without freezing the UI
+                    Thread.sleep(5000);
+
+                    // Update the UI on the JavaFX Application Thread
+                    Platform.runLater(() -> {
+                        // Call the existing refresh method
+                        refreshRooms();
+                        System.out.println("Rooms auto-updated in background.");
+                    });
+                }
+                return null;
+            }
+        };
+
+        // Run the task in a separate background thread
+        Thread updaterThread = new Thread(backgroundUpdater);
+        updaterThread.setDaemon(true); // Ensures thread closes when app closes
+        updaterThread.start();
     }
 }
