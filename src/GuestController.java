@@ -103,7 +103,7 @@ public class GuestController {
     }
 
 
-    // Add this method inside GuestController.java
+
     private void startRealTimeRoomUpdates() {
         Task<Void> backgroundUpdater = new Task<Void>() {
             @Override

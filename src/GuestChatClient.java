@@ -20,10 +20,10 @@ public class GuestChatClient implements Runnable {
             // Listen for messages from Receptionist
             while ((incomingMessage = in.readLine()) != null) {
                 final String msg = incomingMessage;
-                // Update Guest UI (e.g., append to a TextArea in guest.fxml)
+                // Update Guest UI
                 Platform.runLater(() -> {
                     System.out.println("Receptionist: " + msg);
-                    // chatTextArea.appendText("Receptionist: " + msg + "\n");
+
                 });
             }
         } catch (IOException e) {
