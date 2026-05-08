@@ -64,6 +64,8 @@ public class Reservation {
     }
 
     private static void validateDates(LocalDate checkIn, LocalDate checkOut) {
+        if (checkIn == null)  throw new IllegalArgumentException("Check-in date cannot be null.");
+        if (checkOut == null) throw new IllegalArgumentException("Check-out date cannot be null.");
         if (checkOut.isBefore(checkIn)) {
             throw new IllegalArgumentException("Check-in date (" + checkIn + ") must be before check-out date (" + checkOut + ").");
         }

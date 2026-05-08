@@ -1,4 +1,6 @@
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -10,44 +12,30 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class AdminDashboardController {
-
-    /** Set this before navigating to the admin dashboard (e.g. in LoginController). */
     public static Staff loggedInAdmin;
-
-    // ── NAV BUTTONS ───────────────────────────────────────────────────────────
     @FXML private Button btnDashboard;
     @FXML private Button btnRooms;
     @FXML private Button btnReservations;
     @FXML private Button btnGuests;
     @FXML private Button btnInvoices;
-
-    // ── PAGES ─────────────────────────────────────────────────────────────────
     @FXML private VBox dashboardPage;
     @FXML private VBox roomsPage;
     @FXML private VBox reservationsPage;
     @FXML private VBox guestsPage;
     @FXML private VBox invoicesPage;
-
-    // ── SIDEBAR ───────────────────────────────────────────────────────────────
     @FXML private Label userLabel;
     @FXML private Label totalRoomsLabel;
     @FXML private Label availableRoomsLabel;
     @FXML private Label occupiedRoomsLabel;
     @FXML private Label totalGuestsLabel;
     @FXML private Label totalReservationsLabel;
-
-    // ── ROOMS PAGE ────────────────────────────────────────────────────────────
     @FXML private TextField searchField;
     @FXML private ComboBox<String> statusFilter;
     @FXML private TableView<Room> roomTable;
@@ -59,8 +47,6 @@ public class AdminDashboardController {
     @FXML private TableColumn<Room, Double>  colPrice;
     @FXML private TableColumn<Room, String>  colAmenities;
     @FXML private Label tableStatusLabel;
-
-    // ── DASHBOARD PAGE ────────────────────────────────────────────────────────
     @FXML private TableView<Reservation> recentReservationsTable;
     @FXML private TableColumn<Reservation, Integer> colResId;
     @FXML private TableColumn<Reservation, String>  colResGuest;
@@ -68,8 +54,6 @@ public class AdminDashboardController {
     @FXML private TableColumn<Reservation, String>  colResCheckIn;
     @FXML private TableColumn<Reservation, String>  colResCheckOut;
     @FXML private TableColumn<Reservation, String>  colResStatus;
-
-    // ── RESERVATIONS PAGE ─────────────────────────────────────────────────────
     @FXML private TextField resSearchField;
     @FXML private TableView<Reservation> reservationsTable;
     @FXML private TableColumn<Reservation, Integer> colFullResId;
@@ -79,8 +63,6 @@ public class AdminDashboardController {
     @FXML private TableColumn<Reservation, String>  colFullResCheckOut;
     @FXML private TableColumn<Reservation, String>  colFullResStatus;
     @FXML private Label resStatusLabel;
-
-    // ── GUESTS PAGE ───────────────────────────────────────────────────────────
     @FXML private TextField guestSearchField;
     @FXML private TableView<Guest> guestsTable;
     @FXML private TableColumn<Guest, String>  colGuestName;
@@ -90,8 +72,6 @@ public class AdminDashboardController {
     @FXML private TableColumn<Guest, String>  colGuestAddress;
     @FXML private TableColumn<Guest, Integer> colGuestReservations;
     @FXML private Label guestStatusLabel;
-
-    // ── INVOICES PAGE ─────────────────────────────────────────────────────────
     @FXML private TableView<Invoice> invoicesTable;
     @FXML private TableColumn<Invoice, Integer> colInvId;
     @FXML private TableColumn<Invoice, String>  colInvGuest;
@@ -101,10 +81,6 @@ public class AdminDashboardController {
     @FXML private TableColumn<Invoice, String>  colInvDate;
     @FXML private TableColumn<Invoice, String>  colInvStatus;
     @FXML private Label invoiceStatusLabel;
-
-    // ═════════════════════════════════════════════════════════════════════════
-    // INITIALIZE
-    // ═════════════════════════════════════════════════════════════════════════
 
     @FXML
     public void initialize() {
@@ -123,15 +99,11 @@ public class AdminDashboardController {
 
         refreshAll();
 
-        // Auto-refresh every 8 seconds
+        // refresh every 8 seconds
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(8), e -> refreshAll()));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
-
-    // ═════════════════════════════════════════════════════════════════════════
-    // TABLE COLUMN SETUP
-    // ═════════════════════════════════════════════════════════════════════════
 
     private void setupRoomsTable() {
         colRoomId.setCellValueFactory(new PropertyValueFactory<>("roomId"));
@@ -211,11 +183,6 @@ public class AdminDashboardController {
                 new SimpleStringProperty(cell.getValue().isPaid() ? "PAID" : "UNPAID"));
     }
 
-    // ═════════════════════════════════════════════════════════════════════════
-    // REFRESH
-    // ═════════════════════════════════════════════════════════════════════════
-
-    /** Refreshes stats sidebar + all table pages. */
     private void refreshAll() {
         refreshStats();
         refreshRoomsTable();
@@ -267,11 +234,6 @@ public class AdminDashboardController {
         invoiceStatusLabel.setText("Showing " + list.size() + " invoices");
     }
 
-    // ═════════════════════════════════════════════════════════════════════════
-    // NAVIGATION
-    // ═════════════════════════════════════════════════════════════════════════
-
-    /** Shows the given page and hides all others; updates nav-button styles. */
     private void showPage(VBox target) {
         VBox[] pages = {dashboardPage, roomsPage, reservationsPage, guestsPage, invoicesPage};
         Button[] btns = {btnDashboard, btnRooms, btnReservations, btnGuests, btnInvoices};
@@ -292,10 +254,6 @@ public class AdminDashboardController {
     @FXML public void showReservations() { showPage(reservationsPage); }
     @FXML public void showGuests()       { showPage(guestsPage); }
     @FXML public void showInvoices()     { showPage(invoicesPage); }
-
-    // ═════════════════════════════════════════════════════════════════════════
-    // FILTERS
-    // ═════════════════════════════════════════════════════════════════════════
 
     @FXML
     private void filterRooms() {
@@ -341,10 +299,6 @@ public class AdminDashboardController {
         guestsTable.setItems(filtered);
         guestStatusLabel.setText("Showing " + filtered.size() + " guests");
     }
-
-    // ═════════════════════════════════════════════════════════════════════════
-    // ROOM CRUD
-    // ═════════════════════════════════════════════════════════════════════════
 
     @FXML
     private void openAddRoomDialog() {
@@ -397,8 +351,6 @@ public class AdminDashboardController {
             showAlert("No Selection", "Please select a room to edit.", Alert.AlertType.WARNING);
             return;
         }
-
-        // Form fields pre-populated
         TextField roomNumField = new TextField(String.valueOf(selected.getRoomNumber()));
         TextField floorField   = new TextField(String.valueOf(selected.getFloorNumber()));
         ComboBox<RoomType> typeCombo   = buildRoomTypeCombo(selected.getRoomType());
@@ -475,15 +427,10 @@ public class AdminDashboardController {
         });
     }
 
-    /** Refresh button on rooms page. */
     @FXML
     private void refreshTable() {
         refreshAll();
     }
-
-    // ═════════════════════════════════════════════════════════════════════════
-    // RESERVATION ACTIONS
-    // ═════════════════════════════════════════════════════════════════════════
 
     @FXML
     private void confirmReservation() {
@@ -499,7 +446,7 @@ public class AdminDashboardController {
             return;
         }
         selected.setStatus(ReservationStatus.CONFIRMED);
-        selected.getRoom().setStatus(Room.RoomStatus.RESERVED);
+        selected.getRoom().setStatus(Room.RoomStatus.OCCUPIED);
         reservationsTable.refresh();
         roomTable.refresh();
         recentReservationsTable.refresh();
@@ -540,20 +487,11 @@ public class AdminDashboardController {
         });
     }
 
-    // ═════════════════════════════════════════════════════════════════════════
-    // LOGOUT
-    // ═════════════════════════════════════════════════════════════════════════
-
     public void loginMenu(ActionEvent event) {
         loggedInAdmin = null;
         SceneSwitcher.goTo(event, "login.fxml");
     }
 
-    // ═════════════════════════════════════════════════════════════════════════
-    // HELPERS
-    // ═════════════════════════════════════════════════════════════════════════
-
-    /** Builds a ComboBox for RoomType with a display name converter. */
     private ComboBox<RoomType> buildRoomTypeCombo(RoomType selected) {
         ComboBox<RoomType> combo = new ComboBox<>(
                 FXCollections.observableArrayList(HotelDatabase.roomTypes));
@@ -566,7 +504,6 @@ public class AdminDashboardController {
         return combo;
     }
 
-    /** Builds a labeled GridPane from parallel label-text / node arrays. */
     private GridPane buildGrid(String[] labels, javafx.scene.Node[] fields) {
         GridPane grid = new GridPane();
         grid.setHgap(12);
@@ -579,7 +516,6 @@ public class AdminDashboardController {
         return grid;
     }
 
-    /** Shows a simple alert dialog. */
     private void showAlert(String title, String content, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

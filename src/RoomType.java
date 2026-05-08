@@ -56,4 +56,9 @@ public class RoomType implements Manageable {
         System.out.println("Max Occupancy: " + maxOccupancy);
         System.out.println("Base Price Per Night: " + basePricePerNight + " EGP");
     }
+
+    @Override
+    public String toString() {
+        return typeName + " (max " + maxOccupancy + ", " + basePricePerNight + " EGP/night)";
+    }
 }

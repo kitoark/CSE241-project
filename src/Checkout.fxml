@@ -25,6 +25,7 @@
     </HBox>
 
     <HBox spacing="20" alignment="CENTER_RIGHT">
+        <Button text="Back" onAction="#handleBack" styleClass="btn-secondary"/>
         <Button fx:id="confirmButton" text="Confirm Payment" onAction="#handleConfirmPayment" styleClass="btn-primary"/>
     </HBox>
 

@@ -19,7 +19,7 @@ public class Main extends Application {
         stage.setResizable(false);
         stage.setTitle("Grand Hotel");
         stage.setScene(scene);
-        stage.setFullScreen(true);
+        stage.setFullScreen(false);
         stage.show();
     }
 }

@@ -42,13 +42,15 @@ public class RegisterController implements Initializable {
             if (guest.register()) {
                 System.out.println("Registration successful! You can now log in.");
                 loginMenu(event);
+                return;
             } else {
                 errorLabel.setText("Username already taken. Try another one.");
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Registration error: " + e.getMessage());
+            errorLabel.setText(errorLabelText != null ? errorLabelText : e.getMessage());
+            errorLabelText = null;
         }
-        errorLabel.setText(errorLabelText);
     }
 
 

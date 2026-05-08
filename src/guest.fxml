@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="620.0" prefWidth="950.0" spacing="15.0" styleClass="root-vbox" stylesheets="@hotel.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GuestController">
+<VBox prefHeight="660.0" prefWidth="1050.0" spacing="15.0" styleClass="root-vbox" stylesheets="@hotel.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GuestController">
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="80.0" spacing="20.0" styleClass="navbar">
          <children>
@@ -25,12 +25,14 @@
 
       <HBox spacing="15.0" VBox.vgrow="ALWAYS">
          <children>
+
             <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                <children>
                   <Label styleClass="page-title" text="Available Rooms" />
+
                   <HBox spacing="10.0" alignment="CENTER_LEFT">
                      <children>
-                        <TextField fx:id="searchField" onKeyReleased="#handleSearch" promptText="Search room type..." styleClass="search-field" HBox.hgrow="ALWAYS" />
+                        <TextField fx:id="searchField" onKeyReleased="#handleFilter" promptText="Search room type..." styleClass="search-field" HBox.hgrow="ALWAYS" />
                         <Label text="Check-In:" styleClass="field-label" />
                         <DatePicker fx:id="checkInPicker" prefWidth="140" />
                         <Label text="Check-Out:" styleClass="field-label" />
@@ -38,28 +40,55 @@
                         <Button onAction="#handleBookRoom" styleClass="btn-primary" text="Book Now" />
                      </children>
                   </HBox>
+
+                  <HBox spacing="10.0" alignment="CENTER_LEFT">
+                     <children>
+                        <Label text="Min Price:" styleClass="field-label" />
+                        <TextField fx:id="minPriceField" onKeyReleased="#handleFilter" promptText="0" prefWidth="80" styleClass="search-field" />
+                        <Label text="Max Price (EGP):" styleClass="field-label" />
+                        <TextField fx:id="maxPriceField" onKeyReleased="#handleFilter" promptText="Any" prefWidth="80" styleClass="search-field" />
+                        <Label text="Must Include:" styleClass="field-label" />
+                        <ComboBox fx:id="amenityFilter" onAction="#handleFilter" promptText="All Amenities" prefWidth="160" styleClass="role-combo" />
+                        <Button onAction="#handleClearFilters" styleClass="btn-secondary" text="Clear Filters" />
+                     </children>
+                  </HBox>
+
                   <TableView fx:id="roomTable" styleClass="data-table" VBox.vgrow="ALWAYS">
                      <columns>
-                        <TableColumn fx:id="colRoomNumber" prefWidth="100.0" text="Room #" />
-                        <TableColumn fx:id="colType" prefWidth="150.0" text="Type" />
-                        <TableColumn fx:id="colPrice" prefWidth="150.0" text="Price/Night" />
+                        <TableColumn fx:id="colRoomNumber" prefWidth="80.0" text="Room #" />
+                        <TableColumn fx:id="colType" prefWidth="120.0" text="Type" />
+                        <TableColumn fx:id="colPrice" prefWidth="120.0" text="Price/Night" />
+                        <TableColumn fx:id="colAmenities" prefWidth="250.0" text="Amenities" />
                      </columns>
                      <placeholder>
-                        <Label text="No available rooms at the moment." styleClass="table-placeholder" />
+                        <Label text="No rooms match your filters." styleClass="table-placeholder" />
                      </placeholder>
                   </TableView>
                </children>
             </VBox>
 
-            <VBox prefWidth="260.0" spacing="10.0" styleClass="sidebar">
+            <VBox prefWidth="290.0" spacing="10.0" styleClass="sidebar">
                <children>
                   <Label styleClass="sidebar-section-label" text="My Reservations" />
                   <ListView fx:id="reservationsList" VBox.vgrow="ALWAYS" />
+                  <Label fx:id="reservationStatusLabel" styleClass="field-label"
+                         text="Select a reservation to act on it." wrapText="true" />
+                  <HBox spacing="8.0">
+                     <children>
+                        <Button fx:id="cancelBtn" onAction="#handleCancelReservation"
+                                styleClass="btn-danger" text="Cancel"
+                                HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                        <Button fx:id="checkoutBtn" onAction="#handleCheckout"
+                                styleClass="btn-primary" text="Checkout"
+                                HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                     </children>
+                  </HBox>
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
             </VBox>
+
          </children>
       </HBox>
    </children>

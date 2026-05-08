@@ -510,3 +510,22 @@
     -fx-text-fill: #aab4c4;
     -fx-font-size: 12px;
 }
+
+/* Danger Button (Cancel, Delete) */
+.btn-danger {
+    -fx-background-color: #dc2626;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8px;
+    -fx-padding: 8 16 8 16;
+    -fx-cursor: hand;
+}
+
+.btn-danger:hover {
+    -fx-background-color: #b91c1c;
+}
+
+.btn-danger:pressed {
+    -fx-background-color: #991b1b;
+}

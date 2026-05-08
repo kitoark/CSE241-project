@@ -2,7 +2,11 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+
 import java.net.URL;
 import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
@@ -59,7 +63,7 @@ public class CheckoutPaymentController implements Initializable {
             reservationToCheckout.getGuest().checkout(reservationToCheckout, selectedMethod);
             showFeedback("Payment Successful", "Your payment via " + selectedMethod + " has been confirmed.", Alert.AlertType.INFORMATION);
             reservationToCheckout = null;
-            SceneSwitcher.goTo(event, "receptionistDashboard.fxml");
+            SceneSwitcher.goTo(event, "guest.fxml");
         } catch (InvalidPaymentException e) {
             showFeedback("Payment Failed", e.getMessage(), Alert.AlertType.ERROR);
         }
@@ -71,5 +75,11 @@ public class CheckoutPaymentController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void handleBack(ActionEvent event) {
+        reservationToCheckout = null;
+        SceneSwitcher.goTo(event, "guest.fxml");
     }
 }
