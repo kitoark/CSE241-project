@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GuestController">
-   <children>
-      <Button layoutX="204.0" layoutY="127.0" mnemonicParsing="false" text="Button" />
-      <Button layoutX="58.0" layoutY="169.0" mnemonicParsing="false" text="Button" />
-      <Button layoutX="188.0" layoutY="209.0" mnemonicParsing="false" text="Button" />
-      <Button layoutX="300.0" layoutY="150.0" mnemonicParsing="false" text="Button" />
-      <Button layoutX="256.0" layoutY="175.0" mnemonicParsing="false" text="Button" />
-   </children>
-</AnchorPane>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" stylesheets="@hotel.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" />

@@ -5,6 +5,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,6 +53,16 @@ public class AdminDashboardController {
 
         statusFilter.setItems(FXCollections.observableArrayList("All", "AVAILABLE", "RESERVED", "OCCUPIED", "UNDER_MAINTENANCE"));
         refreshTable();
+
+
+        KeyFrame autoRefresh = new KeyFrame(Duration.seconds(8), event -> {
+            refreshTable();
+        });
+        Timeline timeline = new Timeline(autoRefresh);
+
+        timeline.setCycleCount(Animation.INDEFINITE);
+
+        timeline.play();
     }
 
     @FXML
