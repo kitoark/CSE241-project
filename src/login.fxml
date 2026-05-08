@@ -1,17 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.AnchorPane?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginController">
-   <children>
-      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="14.0" prefHeight="17.0" prefWidth="600.0" text="login" />
-      <PasswordField fx:id="loginPasswordBox" layoutX="225.0" layoutY="221.0" />
-      <TextField fx:id="loginUsernameBox" layoutX="225.0" layoutY="171.0" />
-      <Label layoutX="225.0" layoutY="154.0" text="username" />
-      <Label layoutX="225.0" layoutY="204.0" text="password" />
-      <ChoiceBox fx:id="loginChoiceBox" layoutX="225.0" layoutY="267.0" prefWidth="150.0" />
-      <Button fx:id="loginbutton" layoutX="280.0" layoutY="334.0" mnemonicParsing="false" onAction="#login" text="login" />
-      <Hyperlink layoutX="248.0" layoutY="304.0" onAction="#registerMenu" text="Create an account" />
-      <Label fx:id="errorLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="122.0" prefHeight="17.0" prefWidth="600.0" />
-   </children>
-</AnchorPane>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="LoginController"
+      styleClass="root-vbox"
+      stylesheets="@hotel.css"
+      alignment="CENTER"
+      spacing="0"
+      prefWidth="900"
+      prefHeight="600">
+
+    <!-- Top Banner -->
+    <HBox styleClass="login-banner" alignment="CENTER" prefHeight="90">
+        <Label text="🏨" styleClass="banner-icon"/>
+        <VBox alignment="CENTER_LEFT" spacing="2">
+            <HBox.margin>
+                <Insets left="14"/>
+            </HBox.margin>
+            <Label text="GRAND HOTEL" styleClass="banner-title"/>
+            <Label text="Management System" styleClass="banner-subtitle"/>
+        </VBox>
+    </HBox>
+
+    <!-- Login Card -->
+    <VBox styleClass="login-card" alignment="CENTER" spacing="22" maxWidth="420">
+        <VBox.margin>
+            <Insets top="50"/>
+        </VBox.margin>
+        <padding>
+            <Insets top="40" right="50" bottom="40" left="50"/>
+        </padding>
+
+        <Label text="Welcome Back" styleClass="card-heading"/>
+        <Label text="Sign in to your account to continue" styleClass="card-subheading"/>
+
+        <!-- Role Selector -->
+        <HBox alignment="CENTER" spacing="10">
+            <Label text="Login as:" styleClass="field-label"/>
+            <ComboBox fx:id="roleComboBox"
+                      styleClass="role-combo"
+                      promptText="Select Role"
+                      prefWidth="180"/>
+        </HBox>
+
+        <!-- Username Field -->
+        <VBox spacing="6" maxWidth="320" prefWidth="320">
+            <Label text="Username" styleClass="field-label"/>
+            <TextField fx:id="usernameField"
+                       styleClass="input-field"
+                       promptText="Enter your username"
+                       prefWidth="320"/>
+        </VBox>
+
+        <!-- Password Field -->
+        <VBox spacing="6" maxWidth="320" prefWidth="320">
+            <Label text="Password" styleClass="field-label"/>
+            <PasswordField fx:id="passwordField"
+                           styleClass="input-field"
+                           promptText="Enter your password"
+                           prefWidth="320"/>
+        </VBox>
+
+        <!-- Error Message -->
+        <Label fx:id="errorLabel" styleClass="error-label" text="" wrapText="true" maxWidth="320"/>
+
+        <!-- Login Button -->
+        <Button fx:id="loginButton"
+                text="Sign In"
+                styleClass="btn-primary"
+                prefWidth="320"
+                onAction="#handleLogin"/>
+
+        <!-- Divider -->
+        <HBox alignment="CENTER" spacing="10" maxWidth="320" prefWidth="320">
+            <Separator HBox.hgrow="ALWAYS"/>
+            <Label text="or" styleClass="divider-label"/>
+            <Separator HBox.hgrow="ALWAYS"/>
+        </HBox>
+
+        <!-- Guest Login -->
+        <Button fx:id="guestButton"
+                text="Continue as Guest"
+                styleClass="btn-secondary"
+                prefWidth="320"
+                onAction="#handleGuestLogin"/>
+    </VBox>
+
+    <!-- Footer -->
+    <HBox styleClass="login-footer" alignment="CENTER" prefHeight="50">
+        <VBox.margin>
+            <Insets top="30"/>
+        </VBox.margin>
+        <Label text="© 2025 Grand Hotel Management System · All rights reserved" styleClass="footer-text"/>
+    </HBox>
+
+</VBox>

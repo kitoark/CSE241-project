@@ -60,7 +60,11 @@ public class LoginController implements Initializable {
         SceneSwitcher.goTo(e,"guest.fxml");
     }
 
-    public void staffMenu(ActionEvent e){
+    public void staffMenu(ActionEvent e) {
         SceneSwitcher.goTo(e,"staff.fxml");
+    }
+    public void handleLogin(ActionEvent actionEvent) {
+    }
+    public void handleGuestLogin(ActionEvent actionEvent) {
     }
 }
