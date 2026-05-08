@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" spacing="15.0" styleClass="root-vbox" stylesheets="@hotel.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GuestController">
+<VBox prefHeight="620.0" prefWidth="950.0" spacing="15.0" styleClass="root-vbox" stylesheets="@hotel.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GuestController">
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="80.0" spacing="20.0" styleClass="navbar">
          <children>
@@ -28,9 +28,13 @@
             <VBox spacing="10.0" HBox.hgrow="ALWAYS">
                <children>
                   <Label styleClass="page-title" text="Available Rooms" />
-                  <HBox spacing="10.0">
+                  <HBox spacing="10.0" alignment="CENTER_LEFT">
                      <children>
                         <TextField fx:id="searchField" onKeyReleased="#handleSearch" promptText="Search room type..." styleClass="search-field" HBox.hgrow="ALWAYS" />
+                        <Label text="Check-In:" styleClass="field-label" />
+                        <DatePicker fx:id="checkInPicker" prefWidth="140" />
+                        <Label text="Check-Out:" styleClass="field-label" />
+                        <DatePicker fx:id="checkOutPicker" prefWidth="140" />
                         <Button onAction="#handleBookRoom" styleClass="btn-primary" text="Book Now" />
                      </children>
                   </HBox>
@@ -40,11 +44,14 @@
                         <TableColumn fx:id="colType" prefWidth="150.0" text="Type" />
                         <TableColumn fx:id="colPrice" prefWidth="150.0" text="Price/Night" />
                      </columns>
+                     <placeholder>
+                        <Label text="No available rooms at the moment." styleClass="table-placeholder" />
+                     </placeholder>
                   </TableView>
                </children>
             </VBox>
 
-            <VBox prefWidth="250.0" spacing="10.0" styleClass="sidebar">
+            <VBox prefWidth="260.0" spacing="10.0" styleClass="sidebar">
                <children>
                   <Label styleClass="sidebar-section-label" text="My Reservations" />
                   <ListView fx:id="reservationsList" VBox.vgrow="ALWAYS" />

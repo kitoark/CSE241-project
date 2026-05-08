@@ -368,8 +368,13 @@ public class StaffController implements Initializable {
 
         if (!(currentStaff instanceof Receptionist)) { showError("Receptionist access required."); return; }
         Receptionist rec = (Receptionist) currentStaff;
-        rec.manageCheckOut(selected, method);
-        refreshReservations();
+        try {
+            rec.manageCheckOut(selected, method);
+            refreshReservations();
+            showError("Check-out successful!");
+        } catch (InvalidPaymentException ex) {
+            showError("Check-out failed: " + ex.getMessage());
+        }
     }
     @FXML
     public void openAddRoomType(ActionEvent e) {

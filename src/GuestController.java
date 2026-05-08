@@ -20,6 +20,8 @@ public class GuestController {
     @FXML private TableColumn<Room, String> colType;
     @FXML private TableColumn<Room, Double> colPrice;
     @FXML private ListView<String> reservationsList;
+    @FXML private DatePicker checkInPicker;
+    @FXML private DatePicker checkOutPicker;
 
     @FXML
     public void initialize() {
@@ -32,8 +34,12 @@ public class GuestController {
                     new javafx.beans.property.SimpleStringProperty(cellData.getValue().getRoomType().getTypeName()));
             colPrice.setCellValueFactory(new PropertyValueFactory<>("totalPricePerNight"));
 
+            checkInPicker.setValue(LocalDate.now());
+            checkOutPicker.setValue(LocalDate.now().plusDays(1));
+
             refreshRooms();
             refreshReservations();
+            startRealTimeRoomUpdates();
         }
     }
 
@@ -50,7 +56,7 @@ public class GuestController {
     private void refreshReservations() {
         ObservableList<String> resData = FXCollections.observableArrayList();
         for (Reservation res : loggedInGuest.getMyReservations()) {
-            resData.add("Room " + res.getRoom().getRoomNumber() + " - Status: " + res.getStatus());
+            resData.add("Room " + res.getRoom().getRoomNumber() + " | " + res.getCheckIn() + " -> " + res.getCheckOut() + " | " + res.getStatus());
         }
         reservationsList.setItems(resData);
     }
@@ -77,8 +83,26 @@ public class GuestController {
             return;
         }
 
+        LocalDate checkIn = checkInPicker.getValue();
+        LocalDate checkOut = checkOutPicker.getValue();
+
+        if (checkIn == null || checkOut == null) {
+            showAlert("Error", "Please select check-in and check-out dates", Alert.AlertType.WARNING);
+            return;
+        }
+
+        if (!checkOut.isAfter(checkIn)) {
+            showAlert("Error", "Check-out date must be after check-in date", Alert.AlertType.WARNING);
+            return;
+        }
+
+        if (checkIn.isBefore(LocalDate.now())) {
+            showAlert("Error", "Check-in date cannot be in the past", Alert.AlertType.WARNING);
+            return;
+        }
+
         try {
-            loggedInGuest.makeReservation(selectedRoom, LocalDate.now(), LocalDate.now().plusDays(1));
+            loggedInGuest.makeReservation(selectedRoom, checkIn, checkOut);
             showAlert("Success", "Room booked successfully!", Alert.AlertType.INFORMATION);
             refreshRooms();
             refreshReservations();
@@ -86,7 +110,6 @@ public class GuestController {
         } catch (Exception e) {
             showAlert("Failed", e.getMessage(), Alert.AlertType.ERROR);
         }
-
     }
 
     @FXML
@@ -103,30 +126,22 @@ public class GuestController {
         alert.showAndWait();
     }
 
-
-
     private void startRealTimeRoomUpdates() {
         Task<Void> backgroundUpdater = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 while (!isCancelled()) {
-                    // Simulate network/database delay without freezing the UI
                     Thread.sleep(5000);
-
-                    // Update the UI on the JavaFX Application Thread
                     Platform.runLater(() -> {
-                        // Call the existing refresh method
                         refreshRooms();
-                        System.out.println("Rooms auto-updated in background.");
                     });
                 }
                 return null;
             }
         };
 
-        // Run the task in a separate background thread
         Thread updaterThread = new Thread(backgroundUpdater);
-        updaterThread.setDaemon(true); // Ensures thread closes when app closes
+        updaterThread.setDaemon(true);
         updaterThread.start();
     }
 }

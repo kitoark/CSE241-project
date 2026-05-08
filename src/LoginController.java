@@ -38,20 +38,25 @@ public class LoginController implements Initializable {
             Staff staff = Staff.login(username, password);
 
             if (staff != null && staff.getRole() == Role.ADMIN) {
-                // ── Pass the logged-in admin to the dashboard controller ──
                 AdminDashboardController.loggedInAdmin = staff;
                 SceneSwitcher.goTo(e, "adminDashboard.fxml");
 
             } else if (staff != null && staff.getRole() == Role.RECEPTIONIST) {
-                SceneSwitcher.goTo(e, "receptionistDashboard.fxml");
+                ReceptionistController.currentStaff = staff;
+                receptionistMenu(e);
 
             } else {
                 errorLabel.setText("Login failed: invalid username or password.");
             }
+
+
         }
     }
 
     public void registerMenu(ActionEvent event) {
         SceneSwitcher.goTo(event, "register.fxml");
+    }
+    public void receptionistMenu(ActionEvent e){
+        SceneSwitcher.goTo(e,"receptionistDashboard.fxml");
     }
 }

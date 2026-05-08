@@ -9,9 +9,6 @@ import java.io.IOException;
 public class Main extends Application {
     public static void main(String[] args) {
         HotelDatabase.createDummyData();
-        if (!HotelDatabase.guests.isEmpty()) {
-            GuestController.loggedInGuest = HotelDatabase.guests.get(0);
-        }
         Application.launch(Main.class, args);
     }
     @Override

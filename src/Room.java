@@ -48,7 +48,6 @@ public class Room implements Manageable {
 
     public void addAmenity(Amenity amenity) {
         amenities.add(amenity);
-        System.out.println(amenity.getName() + " added to room " + roomNumber + ".");
     }
 
     public void removeAmenity(int amenityId) {
@@ -137,5 +136,9 @@ public class Room implements Manageable {
         System.out.println("  Price/Night : " + getTotalPricePerNight() + " EGP");
         printAmenities();
         System.out.println("-----------------------------");
+    }
+
+    public String toString() {
+        return "Room " + roomNumber + " - " + roomType.getTypeName() + " (" + status + ")";
     }
 }

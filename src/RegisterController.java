@@ -30,9 +30,11 @@ public class RegisterController implements Initializable {
         Gender gender = null;
         if (maleR.isSelected()){
             gender = Gender.MALE;
-        }
-        else if (femaleR.isSelected()){
+        } else if (femaleR.isSelected()){
             gender = Gender.FEMALE;
+        } else {
+            errorLabel.setText("Please select your gender.");
+            return;
         }
         double balance = balanceBox.getValue();
         try {
@@ -40,6 +42,8 @@ public class RegisterController implements Initializable {
             if (guest.register()) {
                 System.out.println("Registration successful! You can now log in.");
                 loginMenu(event);
+            } else {
+                errorLabel.setText("Username already taken. Try another one.");
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Registration error: " + e.getMessage());

@@ -1,4 +1,5 @@
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -11,8 +12,8 @@ public class ReservationController {
     @FXML private TextField guestUsernameField;
     @FXML private TextField guestBalanceField;
     @FXML private TextField preferencesField;
-    @FXML private ComboBox<RoomType>roomTypeComboBox;
-    @FXML private ComboBox<Room>roomComboBox;
+    @FXML private ComboBox<RoomType> roomTypeComboBox;
+    @FXML private ComboBox<Room> roomComboBox;
     @FXML private DatePicker checkinPicker;
     @FXML private DatePicker checkoutPicker;
     @FXML private TextField nightsField;
@@ -36,9 +37,11 @@ public class ReservationController {
             if (g != null) {
                 guestUsernameField.setText(g.getUsername());
                 guestBalanceField.setText(String.format("%.2f EGP", g.getBalance()));
+                preferencesField.setText(g.getRoomPreferences());
             }
         });
     }
+
     @FXML
     private void filterRoomsByType() {
         RoomType selectedType = roomTypeComboBox.getValue();
@@ -78,7 +81,8 @@ public class ReservationController {
         }
         if (cbPool.isSelected()) {
             amenitiesCost += 100;
-        } amenitiesPriceLabel.setText(String.format("%.2f EGP", amenitiesCost));
+        }
+        amenitiesPriceLabel.setText(String.format("%.2f EGP", amenitiesCost));
 
         if (checkin != null && checkout != null && checkout.isAfter(checkin)) {
             long nights = ChronoUnit.DAYS.between(checkin, checkout);
@@ -89,7 +93,7 @@ public class ReservationController {
 
             Guest g = guestComboBox.getValue();
             if (g != null && g.getBalance() < total) {
-                balanceWarningLabel.setText("⚠ Guest balance (" +
+                balanceWarningLabel.setText("Guest balance (" +
                         String.format("%.2f", g.getBalance()) +
                         " EGP) is insufficient for this reservation.");
             } else {
@@ -97,13 +101,15 @@ public class ReservationController {
             }
         }
     }
-    @FXML private void handleConfirmReservation() {
+
+    @FXML
+    private void handleConfirmReservation() {
         Guest g = guestComboBox.getValue();
-        Room  room = roomComboBox.getValue();
+        Room room = roomComboBox.getValue();
         LocalDate cin = checkinPicker.getValue();
         LocalDate cout = checkoutPicker.getValue();
-        PaymentMethod pm = paymentMethodComboBox.getValue();
-        if (g == null || room == null || cin == null || cout == null || pm == null) {
+
+        if (g == null || room == null || cin == null || cout == null) {
             formErrorLabel.setText("Please fill in all required fields (*).");
             return;
         }
@@ -111,17 +117,42 @@ public class ReservationController {
             formErrorLabel.setText("Check-out date must be after check-in date.");
             return;
         }
-        Reservation reservation = new Reservation(g, room, cin, cout, ReservationStatus.PENDING, HotelDatabase.reservations.size() + 1001);
+
+        if (cin.isBefore(LocalDate.now())) {
+            formErrorLabel.setText("Check-in date cannot be in the past.");
+            return;
+        }
+
+        long nights = ChronoUnit.DAYS.between(cin, cout);
+        double amenitiesCost = 0;
+        if (cbWifi.isSelected()) amenitiesCost += 50;
+        if (cbBreakfast.isSelected()) amenitiesCost += 120;
+        if (cbParking.isSelected()) amenitiesCost += 80;
+        if (cbSpa.isSelected()) amenitiesCost += 200;
+        if (cbPool.isSelected()) amenitiesCost += 100;
+
+        double totalCost = (room.getRoomType().getBasePricePerNight() + amenitiesCost) * nights;
+
+        if (g.getBalance() < totalCost) {
+            formErrorLabel.setText("Guest balance is insufficient. Required: " + String.format("%.2f", totalCost) + " EGP");
+            return;
+        }
+
+        Reservation reservation = new Reservation(g, room, cin, cout, ReservationStatus.PENDING, HotelDatabase.reservations.size() + 1);
         HotelDatabase.addReservation(reservation);
+        g.getMyReservations().add(reservation);
         room.reserve();
-        System.out.println("Reservation confirmed: " + reservation.getReservationId());
         formErrorLabel.setText("");
-        goBack();
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText("Reservation confirmed! Reservation ID: " + reservation.getReservationId());
+        alert.showAndWait();
     }
+
     @FXML
-    private void goBack() {
-        System.out.println("Navigate back to Dashboard");
+    private void goBack(ActionEvent event) {
+        SceneSwitcher.goTo(event, "receptionistDashboard.fxml");
     }
 }
-
-

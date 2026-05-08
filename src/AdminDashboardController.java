@@ -376,7 +376,7 @@ public class AdminDashboardController {
                 RoomType type = typeCombo.getValue();
                 if (type == null) { showAlert("Validation Error", "Please select a room type.", Alert.AlertType.ERROR); return null; }
 
-                int newId = HotelDatabase.rooms.size() + 1;
+                int newId = HotelDatabase.rooms.stream().mapToInt(r -> r.getRoomId()).max().orElse(0) + 1;
                 return new Room(newId, roomNum, floor, type);
             } catch (NumberFormatException ex) {
                 showAlert("Validation Error", "Room number and floor must be whole numbers.", Alert.AlertType.ERROR);
@@ -454,6 +454,15 @@ public class AdminDashboardController {
             return;
         }
 
+        boolean hasActive = HotelDatabase.reservations.stream().anyMatch(r ->
+                r.getRoom() == selected &&
+                r.getStatus() != ReservationStatus.CANCELLED &&
+                r.getStatus() != ReservationStatus.COMPLETED);
+        if (hasActive) {
+            showAlert("Cannot Delete", "Room #" + selected.getRoomNumber() + " has active reservations. Cancel them first.", Alert.AlertType.ERROR);
+            return;
+        }
+
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
                 "Delete Room #" + selected.getRoomNumber() + "? This cannot be undone.",
                 ButtonType.OK, ButtonType.CANCEL);
@@ -490,10 +499,13 @@ public class AdminDashboardController {
             return;
         }
         selected.setStatus(ReservationStatus.CONFIRMED);
-        selected.getRoom().setStatus(Room.RoomStatus.OCCUPIED);
-        refreshAll();
+        selected.getRoom().setStatus(Room.RoomStatus.RESERVED);
+        reservationsTable.refresh();
+        roomTable.refresh();
+        recentReservationsTable.refresh();
+        refreshStats();
         showAlert("Success",
-                "Reservation #" + selected.getReservationId() + " confirmed. Room marked as OCCUPIED.",
+                "Reservation #" + selected.getReservationId() + " confirmed. Room marked as RESERVED.",
                 Alert.AlertType.INFORMATION);
     }
 
@@ -521,7 +533,10 @@ public class AdminDashboardController {
         confirm.showAndWait().filter(bt -> bt == ButtonType.OK).ifPresent(bt -> {
             selected.setStatus(ReservationStatus.CANCELLED);
             selected.getRoom().setStatus(Room.RoomStatus.AVAILABLE);
-            refreshAll();
+            reservationsTable.refresh();
+            roomTable.refresh();
+            recentReservationsTable.refresh();
+            refreshStats();
         });
     }
 
