@@ -7,65 +7,51 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
-    @FXML
-    private ComboBox<String> loginChoiceBox;
-    @FXML
-    private TextField loginUsernameBox;
-    @FXML
-    private PasswordField loginPasswordBox;
-    @FXML
-    private Label errorLabel;
 
-    private final String[] roles = {"guest","staff"};
+    @FXML private ComboBox<String> loginChoiceBox;
+    @FXML private TextField        loginUsernameBox;
+    @FXML private PasswordField    loginPasswordBox;
+    @FXML private Label            errorLabel;
+
+    private final String[] roles = {"guest", "staff"};
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loginChoiceBox.getItems().addAll(roles);
         loginChoiceBox.setValue("guest");
     }
 
-    public void login(ActionEvent e){
-        if (loginChoiceBox.getValue().equals("guest")){
-            String username = loginUsernameBox.getText();
-            String password = loginPasswordBox.getText();
+    public void login(ActionEvent e) {
+        String username = loginUsernameBox.getText().trim();
+        String password = loginPasswordBox.getText();
+
+        if (loginChoiceBox.getValue().equals("guest")) {
             Guest guest = Guest.login(username, password);
             if (guest != null) {
-                guestMenu(e);
-                return;
+                GuestController.loggedInGuest = guest;
+                SceneSwitcher.goTo(e, "guest.fxml");
+            } else {
+                errorLabel.setText("Login failed: invalid username or password.");
             }
-            else {
-                errorLabel.setText("Login failed: invalid username or password");
-            }
-        }
-        else if (loginChoiceBox.getValue().equals("staff")){
-            String username = loginUsernameBox.getText();
-            String password = loginPasswordBox.getText();
+
+        } else { // staff
             Staff staff = Staff.login(username, password);
+
             if (staff != null && staff.getRole() == Role.ADMIN) {
-                adminMenu(e);
-                return;
-            }
-            else if (staff != null && staff.getRole() == Role.RECEPTIONIST) {
-                receptionistMenu(e);
-                return;
-            }
-            else {
-                errorLabel.setText("Login failed: invalid username or password");
+                // ── Pass the logged-in admin to the dashboard controller ──
+                AdminDashboardController.loggedInAdmin = staff;
+                SceneSwitcher.goTo(e, "adminDashboard.fxml");
+
+            } else if (staff != null && staff.getRole() == Role.RECEPTIONIST) {
+                SceneSwitcher.goTo(e, "receptionistDashboard.fxml");
+
+            } else {
+                errorLabel.setText("Login failed: invalid username or password.");
             }
         }
     }
 
-    public void registerMenu(ActionEvent event){
-        SceneSwitcher.goTo(event,"register.fxml");
-    }
-
-    public void guestMenu(ActionEvent e){
-        SceneSwitcher.goTo(e,"guest.fxml");
-    }
-
-    public void adminMenu(ActionEvent e){
-        SceneSwitcher.goTo(e,"adminDashboard.fxml");
-    }
-    public void receptionistMenu(ActionEvent e){
-        SceneSwitcher.goTo(e,"receptionistDashboard.fxml");
+    public void registerMenu(ActionEvent event) {
+        SceneSwitcher.goTo(event, "register.fxml");
     }
 }
