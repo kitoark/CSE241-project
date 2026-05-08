@@ -86,6 +86,7 @@ public class GuestController {
         } catch (Exception e) {
             showAlert("Failed", e.getMessage(), Alert.AlertType.ERROR);
         }
+
     }
 
     @FXML

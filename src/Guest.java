@@ -148,6 +148,10 @@ public class Guest {
         if (checkIn.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("Check-in date cannot be in the past");
         }
+        if(this.balance< room.getTotalPricePerNight())
+        {
+            throw new IllegalArgumentException("not enough money");
+        }
 
         int newId = HotelDatabase.reservations.size() + 1;
         Reservation reservation = new Reservation(this, room, checkIn, checkOut, ReservationStatus.PENDING, newId);
