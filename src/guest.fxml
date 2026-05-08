@@ -1,62 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<VBox prefHeight="600.0" prefWidth="900.0" spacing="15.0" styleClass="root-vbox" stylesheets="@hotel.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GuestController">
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GuestController">
    <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="80.0" spacing="20.0" styleClass="navbar">
-         <children>
-            <Label fx:id="nameLabel" styleClass="nav-logo" text="Welcome, Guest" />
-            <Region HBox.hgrow="ALWAYS" />
-            <VBox alignment="CENTER_RIGHT">
-               <children>
-                  <Label styleClass="nav-user" text="Current Balance" />
-                  <Label fx:id="balanceLabel" styleClass="stat-value-green" text="0.0 EGP" />
-               </children>
-            </VBox>
-            <Button onAction="#handleLogout" styleClass="btn-logout" text="Logout" />
-         </children>
-         <padding>
-            <Insets left="20.0" right="20.0" />
-         </padding>
-      </HBox>
-
-      <HBox spacing="15.0" VBox.vgrow="ALWAYS">
-         <children>
-            <VBox spacing="10.0" HBox.hgrow="ALWAYS">
-               <children>
-                  <Label styleClass="page-title" text="Available Rooms" />
-                  <HBox spacing="10.0">
-                     <children>
-                        <TextField fx:id="searchField" onKeyReleased="#handleSearch" promptText="Search room type..." styleClass="search-field" HBox.hgrow="ALWAYS" />
-                        <Button onAction="#handleBookRoom" styleClass="btn-primary" text="Book Now" />
-                     </children>
-                  </HBox>
-                  <TableView fx:id="roomTable" styleClass="data-table" VBox.vgrow="ALWAYS">
-                     <columns>
-                        <TableColumn fx:id="colRoomNumber" prefWidth="100.0" text="Room Number" />
-                        <TableColumn fx:id="colType" prefWidth="150.0" text="Type" />
-                        <TableColumn fx:id="colPrice" prefWidth="150.0" text="Price per Night" />
-                     </columns>
-                  </TableView>
-               </children>
-            </VBox>
-
-            <VBox prefWidth="250.0" spacing="10.0" styleClass="sidebar">
-               <children>
-                  <Label styleClass="sidebar-section-label" text="My Reservations" />
-                  <ListView fx:id="reservationsList" VBox.vgrow="ALWAYS" />
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-            </VBox>
-         </children>
-      </HBox>
+      <Button layoutX="204.0" layoutY="127.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="58.0" layoutY="169.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="188.0" layoutY="209.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="300.0" layoutY="150.0" mnemonicParsing="false" text="Button" />
+      <Button layoutX="256.0" layoutY="175.0" mnemonicParsing="false" text="Button" />
    </children>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
-</VBox>
+</AnchorPane>
