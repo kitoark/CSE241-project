@@ -89,8 +89,8 @@ public class HotelDatabase {
         Schedule morningShift   = new Schedule(8,  16);
         Schedule eveningShift   = new Schedule(16, 22);
 
-        Admin admin = new Admin("admin",  "adminPass1", LocalDate.of(1980, 1, 1), morningShift);
-        Receptionist rec = new Receptionist("receptionist1", "recPass1", LocalDate.of(1992, 5, 20), eveningShift);
+        Admin admin = new Admin("admin",  "adminpass1", LocalDate.of(1980, 1, 1), morningShift);
+        Receptionist rec = new Receptionist("rec", "recpass1", LocalDate.of(1992, 5, 20), eveningShift);
         addStaff(admin);
         addStaff(rec);
 
